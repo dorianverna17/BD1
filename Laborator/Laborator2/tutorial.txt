@@ -1,0 +1,164 @@
+CREATE TABLE departamente3
+(
+	id_departament NUMBER(2) NOT NULL,
+	denumire_departament VARCHAR2(30),
+	telefon VARCHAR(10)
+);
+
+ CREATE TABLE angajati3
+(
+id_angajat NUMBER(4) NOT NULL,
+nume VARCHAR2(30),
+prenume VARCHAR2(30),
+functie VARCHAR2(20),
+id_sef NUMBER(4),
+data_angajarii DATE DEFAULT SYSDATE,
+salariu NUMBER(7,2) DEFAULT 2000,
+comision NUMBER(7,2),
+id_departament NUMBER
+);
+
+ SELECT * FROM EMP;
+
+INSERT INTO angajati3(id_angajat, nume, prenume, functie, id_sef, salariu, id_departament)
+  VALUES(1004, 'Popescu', 'Ion', 'Programator', 1001, 1024, 10);
+INSERT INTO angajati3(id_angajat, nume, prenume, functie, id_sef, salariu, id_departament)
+  VALUES(1005, 'Georgescu', 'Ion', 'Programator', 1001, 1024, 10);
+INSERT INTO angajati3(id_angajat, nume, prenume, functie, id_sef, salariu, id_departament)
+  VALUES(1006, 'Alexandrescu', 'Ion', 'Programator', 1001, 1024, 10);
+
+column nume format a20
+column prenume format a20
+column functie format a20
+column salariu format 9999.99
+SELECT nume,prenume,functie,salariu
+FROM angajati3;
+
+column ENAME format a20
+column JOB format a20
+column SAL format 9999.99
+SELECT ENAME,JOB,SAL
+FROM EMP;
+
+column ENAME format a20
+column JOB format a20
+column SAL format 9999.99
+SELECT ENAME,JOB,SAL
+FROM EMP
+WHERE DEPTNO=30;
+
+column ENAME format a20
+column JOB format a20
+SELECT ENAME,JOB,HIREDATE
+FROM EMP
+WHERE HIREDATE='08-SEP-81';
+
+column ENAME format a20
+column JOB format a20
+SELECT ENAME,JOB,HIREDATE
+FROM EMP
+WHERE HIREDATE<='30-JUN-81' AND HIREDATE>='01-JAN-81';
+
+SELECT nume,salariu,comision FROM angajati3 WHERE id_angajat=1002;
+UPDATE angajati3 SET nume='Petrescu' WHERE id_angajat=1002;
+SELECT nume,salariu,comision FROM angajati3 WHERE id_angajat=1002;
+
+SELECT nume,salariu,comision FROM angajati3;
+UPDATE angajati3 SET comision=0.1*salariu;
+SELECT nume,salariu,comision FROM angajati3;
+
+SELECT nume,salariu,comision FROM angajati3;
+UPDATE angajati3 SET FUNCTIE='Student' where id_angajat=1002;
+SELECT nume,salariu,comision FROM angajati3;
+
+SELECT nume,salariu,comision FROM angajati3;
+UPDATE angajati3 SET salariu=1000, comision=200 where functie='Student';
+SELECT nume,salariu,comision FROM angajati3;
+
+SELECT nume,salariu,comision FROM angajati3;
+UPDATE angajati3 SET comision=NULL where functie='Student';
+SELECT nume,salariu,comision FROM angajati3;
+
+INSERT INTO angajati3(id_angajat, nume, prenume, functie, id_sef, id_departament, data_angajarii)
+VALUES(4003, 'Pop', 'Alina', 'Analist', 1001, 20, '21-NOV-1995');
+INSERT INTO angajati3(id_angajat, nume, prenume, functie, id_sef, id_departament, data_angajarii)
+VALUES(4004, 'Pop', 'Calin', 'Tester', 1001, 20, '01-JAN-1980');
+INSERT INTO angajati3(id_angajat, nume, prenume, functie, id_sef, id_departament, data_angajarii)
+VALUES(4005, 'Pop', 'Andrei', 'Manager', 1001, 20, '14-FEB-1995');
+
+SELECT nume,prenume,data_angajarii,comision
+FROM angajati3
+
+DELETE FROM angajati3
+WHERE nume='Pop' AND prenume='Alina';
+
+SELECT nume,prenume,data_angajarii,comision
+FROM angajati3
+
+DELETE FROM angajati3
+WHERE data_angajarii < '01-JAN-1985';
+
+SELECT nume,prenume,data_angajarii,comision
+FROM angajati3
+
+DELETE FROM angajati3
+WHERE comision is NULL;
+
+SELECT nume,prenume,data_angajarii,comision
+FROM angajati3
+
+SELECT nume,prenume,data_angajarii,comision
+FROM angajati3
+
+DELETE FROM angajati3
+WHERE functie='Student';
+
+SELECT nume,prenume,data_angajarii,comision
+FROM angajati3
+
+CREATE TABLE departamente4
+(
+	id_departament NUMBER(2) NOT NULL,
+	denumire_departament VARCHAR2(30),
+	telefon VARCHAR(10)
+);
+
+CREATE TABLE grila_salariu4
+(
+	grad NUMBER(2),
+	nivel_inferior NUMBER,
+	nivel_superior NUMBER
+);
+
+ CREATE TABLE angajati4
+(
+id_angajat NUMBER(4) NOT NULL,
+nume VARCHAR2(30),
+prenume VARCHAR2(30),
+functie VARCHAR2(20),
+id_sef NUMBER(4),
+data_angajarii DATE DEFAULT SYSDATE,
+salariu NUMBER(7,2) DEFAULT 2000,
+comision NUMBER(7,2),
+id_departament NUMBER
+);
+
+ALTER TABLE departamente4 ADD CONSTRAINT pk_departamente PRIMARY KEY (id_departament);
+
+ALTER TABLE grila_salariu4 ADD CONSTRAINT pk_grila PRIMARY KEY (grad);
+
+ALTER TABLE angajati4 ADD CONSTRAINT pk_angajati PRIMARY KEY (id_angajat);
+
+ALTER TABLE angajati4 ADD CONSTRAINT fk_ang__dep FOREIGN KEY (id_departament)
+REFERENCES departamente4(id_departament);
+
+ALTER TABLE angajati4 ADD CONSTRAINT fk_ang__ang FOREIGN KEY (id_sef)
+REFERENCES angajati4(id_angajat);
+
+ALTER TABLE departamente4 ADD CONSTRAINT uq_denumire UNIQUE (denumire_departament);
+
+ALTER TABLE angajati4 ADD CONSTRAINT uq_nume UNIQUE (nume, prenume);
+
+DROP TABLE angajati4;
+DROP TABLE departamente4;
+DROP TABLE grila_salariu4;
